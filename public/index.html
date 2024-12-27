@@ -5,37 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log Monitoring</title>
     <link rel="stylesheet" href="log.css">
+ 
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
     <div class="log-container">
         <h1>Server Logs</h1>
-        <div id="logOutput" class="log-output">
-        
-        </div>
+        <div id="logOutput" class="log-output"></div>
     </div>
 
     <script>
- 
-        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${wsProtocol}//${window.location.host}`;
-        const socket = new WebSocket(wsUrl);
+        const socket = io();
 
-        socket.onopen = () => {
-            console.log('WebSocket connection established');
-        };
+        socket.on('connect', () => {
+            console.log('Socket.IO connection established');
+        });
 
-        socket.onmessage = (event) => {
+        socket.on('message', (message) => {
+            addLogEntry(message);
+        });
+
+        socket.on('newImage', (message) => {
+            addLogEntry(message);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Socket.IO connection closed');
+        });
+
+        function addLogEntry(message) {
             const logOutput = document.getElementById('logOutput');
             const newLog = document.createElement('div');
             newLog.classList.add('log-entry');
-            newLog.textContent = event.data;
+            newLog.textContent = message;
             logOutput.appendChild(newLog);
-            logOutput.scrollTop = logOutput.scrollHeight; 
-        };
-
-        socket.onclose = () => {
-            console.log('WebSocket connection closed');
-        };
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
     </script>
 </body>
 </html>

@@ -4,14 +4,15 @@
   "main": "api.js",
   "scripts": {
     "start": "node api.js",
-    "build": "mkdir -p dist && cp -r public dist/ && cp api.js dist/",
-    "dev": "nodemon api.js"
+    "dev": "nodemon api.js",
+    "vercel-build": "echo hello"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "path": "^0.12.7",
-    "ws": "^8.2.3"
+    "ws": "^8.2.3",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
@@ -20,3 +21,4 @@
     "node": "18.x"
   }
 }
+

@@ -2,8 +2,9 @@ services:
   - type: web
     name: gaixinh-api
     env: node
-    buildCommand: npm install
-    startCommand: npm start
+    buildCommand: npm install && npm run build
+    startCommand: cd dist && npm start
+    nodeVersion: 18.x
     envVars:
       - key: NODE_ENV
         value: production

@@ -4,7 +4,7 @@
   "main": "api.js",
   "scripts": {
     "start": "node api.js",
-    "build": "mkdir -p public && cp -r src/public/* public/",
+    "build": "mkdir -p dist && cp -r public dist/ && cp api.js dist/",
     "dev": "nodemon api.js"
   },
   "dependencies": {
@@ -17,6 +17,6 @@
     "nodemon": "^2.0.15"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": "18.x"
   }
 }

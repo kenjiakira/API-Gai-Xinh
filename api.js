@@ -1,8 +1,12 @@
 const express = require('express');
 const http = require('http');
-const WebSocket = require('ws'); 
+const WebSocket = require('ws');
+const cors = require('cors');
 const app = express();
-const port = 3000;
+
+app.use(cors());
+
+const port = process.env.PORT || 3000;
 
 const imgurImages = [
 "https://i.imgur.com/FNRRTy7.jpg",
@@ -8736,8 +8740,7 @@ const imgurImages = [
 "https://i.imgur.com/PUzHTag.jpg",
 "https://i.imgur.com/BRRYT2i.jpg",
 "https://i.imgur.com/ILPahVz.jpg",
-"https://i.imgur.com/rYiAfye.jpg"
-];
+"https://i.imgur.com/rYiAfye.jpg",];
 
 let sentImages = [];
 
@@ -8779,6 +8782,7 @@ app.get('/getRandomImage', (req, res) => {
     });
 });
 
+// Update server.listen logging
 server.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+    console.log(`Server running on port ${port}`);
 });

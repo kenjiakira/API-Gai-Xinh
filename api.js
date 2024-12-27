@@ -5,13 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}));
-
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const port = process.env.PORT || 3000;
@@ -49,23 +43,12 @@ io.on('connection', (socket) => {
     });
 });
 
-const basicAuth = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    
-    if (!authHeader) {
-        res.setHeader('WWW-Authenticate', 'Basic');
-        return res.status(401).json({ error: 'Authorization required' });
-    }
-    
-    next();
-};
-
-app.get('/getRandomImage', basicAuth, (req, res) => {
+app.get('/getRandomImage', (req, res) => {
     const availableImages = imgurImages.filter(img => !sentImages.includes(img));
 
     if (availableImages.length === 0) {
         sentImages = [];
-        return res.json({ error: 'Hết ảnh để gửi, danh sách ảnh đã được làm mới.' });
+        return res.json({ imageUrl: imgurImages[0] }); 
     }
 
     const randomIndex = Math.floor(Math.random() * availableImages.length);
@@ -73,7 +56,6 @@ app.get('/getRandomImage', basicAuth, (req, res) => {
     sentImages.push(randomImage);
 
     res.json({ imageUrl: randomImage });
-
     io.emit('newImage', `New image sent: ${randomImage}`);
 });
 

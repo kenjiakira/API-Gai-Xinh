@@ -2,9 +2,11 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const cors = require('cors');
+const path = require('path');
 const app = express();
 
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
 const port = process.env.PORT || 3000;
 
@@ -49,6 +51,10 @@ app.get('/getRandomImage', (req, res) => {
             client.send(`New image sent: ${randomImage}`);
         }
     });
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 server.on('error', (error) => {
